@@ -1,6 +1,7 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'firebase_options.dart';
@@ -39,6 +40,16 @@ class MyApp extends StatelessWidget {
         ),
         visualDensity: FlexColorScheme.comfortablePlatformDensity,
         cupertinoOverrideTheme: const CupertinoThemeData(applyThemeToAll: true),
+      ).copyWith(
+        appBarTheme: AppBarTheme(
+          systemOverlayStyle: SystemUiOverlayStyle(
+            systemNavigationBarColor:
+                FlexThemeData.dark(scheme: FlexScheme.blackWhite)
+                    .colorScheme
+                    .surfaceContainer,
+            systemNavigationBarIconBrightness: Brightness.light,
+          ),
+        ),
       ),
       home: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
