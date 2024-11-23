@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tasksync/models/task.dart';
-import 'package:tasksync/screens/tasks_screen.dart';
-import 'package:tasksync/screens/profile_screen.dart';
+import 'package:tasksync/screens/home/parts/tasks/tasks_screen.dart';
+import 'package:tasksync/screens/home/parts/profile/profile_screen.dart';
 import 'package:tasksync/services/auth_service.dart';
 import 'package:tasksync/services/task_service.dart';
 
@@ -71,20 +70,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Future<void> _onReorder(int oldIndex, int newIndex) async {
-    final tasks =
-        (await _taskService.getTasks(_authService.currentUser!.uid).first)
-            .toList();
-
-    if (oldIndex < newIndex) {
-      newIndex -= 1;
-    }
-    final Task item = tasks.removeAt(oldIndex);
-    tasks.insert(newIndex, item);
-
-    await _taskService.reorderTasks(tasks);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
           TasksScreen(
             taskService: _taskService,
             userId: _authService.currentUser!.uid,
-            onReorder: _onReorder,
+            onAddTask: _showAddTaskDialog,
           ),
           ProfileScreen(
             authService: _authService,
