@@ -31,7 +31,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _showAddTaskDialog() async {
+    if (_selectedIndex != 0) {
+      setState(() => _selectedIndex = 0);
+    }
+
     _taskController.clear();
+
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
