@@ -90,7 +90,25 @@ class _TasksScreenState extends State<TasksScreen> {
                 key: Key(task.id),
                 child: Dismissible(
                   key: Key(task.id),
-                  onDismissed: (_) => widget.taskService.deleteTask(task.id),
+                  onDismissed: (_) {
+                    final deletedTask = task;
+                    widget.taskService.deleteTask(task.id);
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: const Text('Task deleted'),
+                        action: SnackBarAction(
+                          label: 'Undo',
+                          onPressed: () {
+                            widget.taskService.addTask(
+                              deletedTask.title,
+                              deletedTask.userId,
+                            );
+                          },
+                        ),
+                      ),
+                    );
+                  },
                   direction: DismissDirection.endToStart,
                   background: Container(
                     alignment: Alignment.centerRight,
