@@ -31,7 +31,6 @@ class MyApp extends StatelessWidget {
           interactionEffects: true,
           tintedDisabledControls: true,
           blendOnColors: true,
-          useM2StyleDividerInM3: true,
           inputDecoratorIsFilled: true,
           inputDecoratorBorderType: FlexInputBorderType.outline,
           alignedDropdown: true,
