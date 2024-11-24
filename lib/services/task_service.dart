@@ -19,7 +19,8 @@ class TaskService {
     });
   }
 
-  Future<void> addTask(String title, String userId) async {
+  Future<void> addTask(
+      String title, String userId, TaskPriority priority) async {
     final QuerySnapshot querySnapshot = await _firestore
         .collection('tasks')
         .where('userId', isEqualTo: userId)
@@ -40,12 +41,21 @@ class TaskService {
       'createdAt': DateTime.now().toIso8601String(),
       'userId': userId,
       'position': position,
+      'priority': priority.name,
     });
   }
 
   Future<void> reorderTask(String taskId, double newPosition) async {
     await _firestore.collection('tasks').doc(taskId).update({
       'position': newPosition,
+    });
+  }
+
+  Future<void> editTask(
+      String taskId, String newTitle, TaskPriority priority) async {
+    await _firestore.collection('tasks').doc(taskId).update({
+      'title': newTitle,
+      'priority': priority.name,
     });
   }
 

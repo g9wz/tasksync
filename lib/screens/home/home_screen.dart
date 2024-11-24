@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tasksync/screens/home/parts/tasks/dialogs/add_task_dialog.dart';
 import 'package:tasksync/screens/home/parts/tasks/tasks_screen.dart';
 import 'package:tasksync/screens/home/parts/profile/profile_screen.dart';
 import 'package:tasksync/services/auth_service.dart';
@@ -14,63 +15,18 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final _taskService = TaskService();
   final _authService = AuthService();
-  final _taskController = TextEditingController();
   int _selectedIndex = 0;
-
-  Future<void> _addTask() async {
-    if (_taskController.text.isNotEmpty) {
-      await _taskService.addTask(
-          _taskController.text, _authService.currentUser!.uid);
-      _taskController.clear();
-    }
-  }
-
-  void _cancelAdd() {
-    _taskController.clear();
-    Navigator.pop(context);
-  }
 
   Future<void> _showAddTaskDialog() async {
     if (_selectedIndex != 0) {
       setState(() => _selectedIndex = 0);
     }
 
-    _taskController.clear();
-
     await showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Add New Task'),
-        contentPadding: const EdgeInsets.fromLTRB(24, 20, 24, 24),
-        content: SizedBox(
-          width: MediaQuery.of(context).size.width * 0.8,
-          child: TextField(
-            controller: _taskController,
-            decoration: const InputDecoration(
-              hintText: 'Enter task description',
-              border: OutlineInputBorder(),
-              contentPadding:
-                  EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            ),
-            autofocus: true,
-            maxLines: 2,
-            minLines: 1,
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: _cancelAdd,
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () {
-              _addTask();
-              Navigator.pop(context);
-            },
-            child: const Text('Add'),
-          ),
-        ],
-        actionsPadding: const EdgeInsets.fromLTRB(24, 0, 24, 16),
+      builder: (context) => AddTaskDialog(
+        taskService: _taskService,
+        authService: _authService,
       ),
     );
   }
@@ -149,7 +105,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
-    _taskController.dispose();
     super.dispose();
   }
 }

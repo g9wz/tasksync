@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tasksync/screens/home/parts/tasks/dialogs/edit_task_dialog.dart';
 import 'package:tasksync/services/task_service.dart';
 import 'package:tasksync/models/task.dart';
 
@@ -103,6 +104,7 @@ class _TasksScreenState extends State<TasksScreen> {
                             widget.taskService.addTask(
                               deletedTask.title,
                               deletedTask.userId,
+                              deletedTask.priority,
                             );
                           },
                         ),
@@ -120,29 +122,74 @@ class _TasksScreenState extends State<TasksScreen> {
                   ),
                   child: Card(
                     margin: const EdgeInsets.only(bottom: 8),
-                    child: ListTile(
-                      contentPadding:
-                          const EdgeInsets.symmetric(horizontal: 16),
-                      leading: ReorderableDragStartListener(
-                        index: index,
-                        child: const Icon(Icons.drag_handle),
-                      ),
-                      title: Text(
-                        task.title,
-                        style: TextStyle(
-                          decoration: task.isCompleted
-                              ? TextDecoration.lineThrough
-                              : null,
-                        ),
-                      ),
-                      trailing: Transform.translate(
-                        offset: const Offset(8, 0),
-                        child: Checkbox(
-                          value: task.isCompleted,
-                          onChanged: (_) => widget.taskService.toggleTaskStatus(
-                            task.id,
-                            task.isCompleted,
+                    child: InkWell(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => EditTaskDialog(
+                            task: task,
+                            taskService: widget.taskService,
                           ),
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            ReorderableDragStartListener(
+                              index: index,
+                              child: const Icon(Icons.drag_handle),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Text(
+                                task.title,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  decoration: task.isCompleted
+                                      ? TextDecoration.lineThrough
+                                      : null,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Container(
+                              width: 70,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 2,
+                              ),
+                              decoration: BoxDecoration(
+                                color: task.priority.color.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                  color: task.priority.color.withOpacity(0.2),
+                                  width: 1,
+                                ),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  task.priority.label,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: task.priority.color,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Checkbox(
+                              value: task.isCompleted,
+                              onChanged: (_) =>
+                                  widget.taskService.toggleTaskStatus(
+                                task.id,
+                                task.isCompleted,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
