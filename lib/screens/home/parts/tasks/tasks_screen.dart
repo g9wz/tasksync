@@ -83,6 +83,7 @@ class _TasksScreenState extends State<TasksScreen> {
 
           return ReorderableListView.builder(
             padding: const EdgeInsets.all(16),
+            buildDefaultDragHandles: false,
             itemCount: snapshot.data!.length,
             onReorder: _onReorder,
             itemBuilder: (context, index) {
