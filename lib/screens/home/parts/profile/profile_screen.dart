@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tasksync/services/auth_service.dart';
+import 'package:tasksync/screens/home/parts/profile/dialogs/delete_account_dialog.dart';
 
 class ProfileScreen extends StatelessWidget {
   final AuthService authService;
@@ -84,30 +85,7 @@ class ProfileScreen extends StatelessWidget {
               const SizedBox(height: 16),
               TextButton(
                 onPressed: () async {
-                  final confirmed = await showDialog<bool>(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: const Text('Delete Account'),
-                      content: const Text(
-                        'This action cannot be undone.',
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.of(context).pop(false),
-                          child: const Text('CANCEL'),
-                        ),
-                        TextButton(
-                          onPressed: () => Navigator.of(context).pop(true),
-                          child: Text(
-                            'DELETE',
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.error,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
+                  final confirmed = await DeleteAccountDialog.show(context);
 
                   if (confirmed == true) {
                     try {

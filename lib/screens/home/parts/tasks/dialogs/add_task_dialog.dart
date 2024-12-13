@@ -62,7 +62,10 @@ class AddTaskDialogState extends State<AddTaskDialog> {
     final theme = Theme.of(context);
 
     return AlertDialog(
-      title: const Text('Add New Task', textAlign: TextAlign.center),
+      title: const Text(
+        'Add New Task',
+        textAlign: TextAlign.center,
+      ),
       content: SizedBox(
         width: MediaQuery.of(context).size.width * 0.8,
         child: Column(
@@ -140,6 +143,7 @@ class AddTaskDialogState extends State<AddTaskDialog> {
                 child: const Text('Cancel'),
               ),
             ),
+            const SizedBox(width: 8),
             Expanded(
               child: FilledButton(
                 onPressed: _addTask,
