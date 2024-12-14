@@ -71,6 +71,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     border: OutlineInputBorder(),
                   ),
                   keyboardType: TextInputType.emailAddress,
+                  textInputAction: TextInputAction.next,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your email';
@@ -86,6 +87,8 @@ class _AuthScreenState extends State<AuthScreen> {
                     border: OutlineInputBorder(),
                   ),
                   obscureText: true,
+                  textInputAction: TextInputAction.done,
+                  onFieldSubmitted: (_) => _submitForm(),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your password';
